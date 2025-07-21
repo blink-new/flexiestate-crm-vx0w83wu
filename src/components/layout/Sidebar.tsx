@@ -62,7 +62,7 @@ export function Sidebar() {
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <Building className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-semibold text-gray-900">FlexiEstate</span>
+              <span className="text-lg font-semibold text-gray-900">LeverageLabs</span>
             </div>
           </div>
 

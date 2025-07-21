@@ -21,7 +21,8 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  closestCorners
+  closestCorners,
+  useDroppable
 } from '@dnd-kit/core'
 import {
   SortableContext,
@@ -231,6 +232,10 @@ function SortableDealCard({ deal }: { deal: Deal }) {
 
 // Droppable Stage Column Component
 function StageColumn({ stage, deals }: { stage: PipelineStage; deals: Deal[] }) {
+  const { setNodeRef, isOver } = useDroppable({
+    id: stage.id,
+  })
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -245,7 +250,8 @@ function StageColumn({ stage, deals }: { stage: PipelineStage; deals: Deal[] }) 
     <div className="space-y-4">
       {/* Stage Header */}
       <div className={cn(
-        "rounded-lg p-4 border-2 border-dashed border-gray-300",
+        "rounded-lg p-4 border-2 border-dashed",
+        isOver ? "border-blue-500 bg-blue-50" : "border-gray-300",
         stage.color
       )}>
         <div className="flex items-center justify-between">
@@ -259,23 +265,31 @@ function StageColumn({ stage, deals }: { stage: PipelineStage; deals: Deal[] }) 
         </p>
       </div>
 
-      {/* Deal Cards */}
-      <SortableContext items={deals.map(d => d.id)} strategy={verticalListSortingStrategy}>
-        <div className="space-y-3 min-h-[400px]">
-          {deals.map((deal) => (
-            <SortableDealCard key={deal.id} deal={deal} />
-          ))}
-          
-          {/* Add Deal Button */}
-          <Button 
-            variant="ghost" 
-            className="w-full h-12 border-2 border-dashed border-gray-300 hover:border-gray-400 hover:bg-gray-50"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Deal
-          </Button>
-        </div>
-      </SortableContext>
+      {/* Droppable Area for Deal Cards */}
+      <div 
+        ref={setNodeRef}
+        className={cn(
+          "min-h-[400px] p-2 rounded-lg border-2 border-dashed transition-colors",
+          isOver ? "border-blue-500 bg-blue-50/50" : "border-transparent"
+        )}
+      >
+        <SortableContext items={deals.map(d => d.id)} strategy={verticalListSortingStrategy}>
+          <div className="space-y-3">
+            {deals.map((deal) => (
+              <SortableDealCard key={deal.id} deal={deal} />
+            ))}
+            
+            {/* Add Deal Button */}
+            <Button 
+              variant="ghost" 
+              className="w-full h-12 border-2 border-dashed border-gray-300 hover:border-gray-400 hover:bg-gray-50"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add Deal
+            </Button>
+          </div>
+        </SortableContext>
+      </div>
     </div>
   )
 }
@@ -317,7 +331,7 @@ export function Pipeline() {
     // Determine the new stage
     let newStageId = activeDeal.stageId
 
-    // If dropped on a stage header or another deal, find the stage
+    // Check if dropped on a stage (column)
     const targetStage = stages.find(stage => stage.id === overId)
     if (targetStage) {
       newStageId = targetStage.id
@@ -473,8 +487,8 @@ export function Pipeline() {
             <div>
               <h4 className="font-medium text-blue-900">Pipeline Management Tips</h4>
               <p className="text-sm text-blue-700 mt-1">
-                Drag deals between stages to update their status. The pipeline automatically calculates totals and probabilities. 
-                Keep your deals updated to maintain accurate forecasting.
+                Drag deals between stages to update their status. You can now drop deals anywhere in a column! 
+                The pipeline automatically calculates totals and probabilities. Keep your deals updated to maintain accurate forecasting.
               </p>
             </div>
           </div>

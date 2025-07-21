@@ -31,7 +31,7 @@ function App() {
           <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
             <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">Loading FlexiEstate CRM</h2>
+          <h2 className="text-xl font-semibold text-gray-900">Loading LeverageLabs RealEstateCRM</h2>
           <p className="text-gray-600 mt-1">Please wait while we set up your workspace...</p>
         </div>
       </div>
@@ -47,7 +47,7 @@ function App() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h6m-6 4h6m-6 4h6" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">FlexiEstate CRM</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">LeverageLabs RealEstateCRM</h1>
           <p className="text-gray-600 mb-8">
             Your flexible real estate CRM with drag-and-drop pipeline management, 
             comprehensive lead tracking, and advanced relationship mapping.
